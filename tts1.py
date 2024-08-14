@@ -1,13 +1,17 @@
 import streamlit as st
 import gtts
-from playsound import playsound
+import io
 import os
 
 def gtts_speak(language, tld, speech):
     tts = gtts.gTTS(speech, lang=language, tld=tld)
-    tts.save("hello.mp3")
-    playsound("hello.mp3")
-    os.remove("hello.mp3")  # Clean up the file after playing
+    # Save the audio to a bytes buffer
+    audio_buffer = io.BytesIO()
+    tts.write_to_fp(audio_buffer)
+    audio_buffer.seek(0)
+
+    # Create an audio player in Streamlit
+    st.audio(audio_buffer, format="audio/mp3")
 
 st.title("Text-to-Speech Application")
 
