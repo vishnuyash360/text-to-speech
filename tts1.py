@@ -1,23 +1,18 @@
 import streamlit as st
 import gtts
-import pygame
 import pyttsx3
 import os
+import io
 
 def gtts_speak(language, tld, speech):
     tts = gtts.gTTS(speech, lang=language, tld=tld)
-    tts.save("hello.mp3")
+    # Save the audio to a bytes buffer
+    audio_buffer = io.BytesIO()
+    tts.write_to_fp(audio_buffer)
+    audio_buffer.seek(0)
 
-    # Initialize pygame mixer and play the audio
-    pygame.mixer.init()
-    pygame.mixer.music.load("hello.mp3")
-    pygame.mixer.music.play()
-
-    # Wait for the sound to finish playing
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
-
-    os.remove("hello.mp3")  # Clean up the file after playing
+    # Create an audio player in Streamlit
+    st.audio(audio_buffer, format="audio/mp3")
 
 def pyttsx3_speak(voice_choice, speech):
     engine = pyttsx3.init()
@@ -31,9 +26,14 @@ def pyttsx3_speak(voice_choice, speech):
         engine.setProperty('voice', voices[0].id)
     
     engine.setProperty('rate', 150)
-    engine.say(speech)
+    engine.save_to_file(speech, "output.wav")
     engine.runAndWait()
-    engine.stop()
+    
+    # Stream the generated audio file
+    with open("output.wav", "rb") as audio_file:
+        st.audio(audio_file, format="audio/wav")
+    
+    os.remove("output.wav")  # Clean up the file after playing
 
 st.title("Text-to-Speech Application")
 
