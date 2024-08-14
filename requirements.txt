@@ -1,4 +1,4 @@
 streamlit
 gtts
-playsound
+pygame==2.5.1
 pyttsx3
