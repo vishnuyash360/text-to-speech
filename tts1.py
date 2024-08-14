@@ -1,13 +1,22 @@
 import streamlit as st
 import gtts
-from playsound import playsound
+import pygame
 import pyttsx3
 import os
 
 def gtts_speak(language, tld, speech):
     tts = gtts.gTTS(speech, lang=language, tld=tld)
     tts.save("hello.mp3")
-    playsound("hello.mp3")
+
+    # Initialize pygame mixer and play the audio
+    pygame.mixer.init()
+    pygame.mixer.music.load("hello.mp3")
+    pygame.mixer.music.play()
+
+    # Wait for the sound to finish playing
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
+
     os.remove("hello.mp3")  # Clean up the file after playing
 
 def pyttsx3_speak(voice_choice, speech):
