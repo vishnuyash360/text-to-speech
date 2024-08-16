@@ -34,6 +34,8 @@ if engine_choice == "gtts":
             tld = "co.in"
         elif accent_preference == "australia":
             tld = "com.au"
+        elif accent_preference == "canada":
+            tld = "ca"    
         else:
             tld = "com"
     
