@@ -26,7 +26,7 @@ if engine_choice == "gtts":
         tld = "co.in"
     else:
         language = "en"
-        accent_preference = st.selectbox("Choose accent", ["us", "uk", "india", "australia"])
+        accent_preference = st.selectbox("Choose accent", ["us", "uk", "india", "australia","canada"])
         
         if accent_preference == "uk":
             tld = "co.uk"
